@@ -6,10 +6,10 @@ pragma abicoder v2;
 import "@rarible/royalties-upgradeable/contracts/RoyaltiesV2Upgradeable.sol";
 
 //royalties for gen-art, one royalty value for the whole collection
-contract RoyaltiesV2GenImpl is RoyaltiesV2Upgradeable {
+contract RoyaltiesV2MysteryBoxesImpl is RoyaltiesV2Upgradeable {
     LibPart.Part[] collectionRoyalties;
 
-    function __RoyaltiesV2GenImpl_init_unchained(LibPart.Part[] memory _royalties) internal initializer {
+    function __RoyaltiesV2MysteryBoxesImpl_init_unchained(LibPart.Part[] memory _royalties) internal initializer {
         _saveRoyalties(_royalties);
     }
 

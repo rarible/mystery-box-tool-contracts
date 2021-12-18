@@ -1,5 +1,5 @@
 {
-  "name": "generative-art",
+  "name": "mystery-boxes",
   "main": "truffle.js",
   "directories": {
     "test": "test"

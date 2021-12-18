@@ -3,13 +3,13 @@
 pragma solidity ^0.7.0;
 pragma abicoder v2;
 
-import "../../contracts/royalties/RoyaltiesV2GenImpl.sol";
+import "../../contracts/royalties/RoyaltiesV2MysteryBoxesImpl.sol";
 
-contract RoyaltiesV2MysteryBoxesImplTest is RoyaltiesV2GenImpl {
+contract RoyaltiesV2MysteryBoxesImplTest is RoyaltiesV2MysteryBoxesImpl {
 
-    function __RoyaltiesV2GenImplTest_init(LibPart.Part[] memory _royalties) external initializer {
+    function __RoyaltiesV2MysteryBoxesImplTest_init(LibPart.Part[] memory _royalties) external initializer {
         __RoyaltiesV2Upgradeable_init_unchained();
-        __RoyaltiesV2GenImpl_init_unchained(_royalties);
+        __RoyaltiesV2MysteryBoxesImpl_init_unchained(_royalties);
     }
 
 }

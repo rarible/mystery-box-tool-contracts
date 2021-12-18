@@ -38,15 +38,12 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
   });
 
   it("should correctly create token from factory", async () => {
-    const trait1 = [[1, 2, 9997]]
-    const trait2 = [[3333, 3333, 3334]]
-    const traits = [trait1, trait2]
     const total = 3;
     const collectionRoyalties = [[accounts[5], 700]]
     const name = "Tc"
     const symbol = "T"
     const maxValue = 10;
-    const initData = [name, symbol, collectionRoyalties, [trait1, trait2], total, maxValue];
+    const initData = [name, symbol, collectionRoyalties,  total, maxValue];
 
     const artist = accounts[2]
 
@@ -75,26 +72,6 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
     assert.equal(await token.symbol(), symbol, "symbol")
     assert.equal(await token.contractURI(), baseURI + token.address.toLowerCase(), "contractURI")
 
-    //check traits
-    const TraitsSet = await token.getPastEvents("TraitsSet", {
-      fromBlock: tx.receipt.blockNumber,
-      toBlock: tx.receipt.blockNumber
-    });
-
-    const traitsFromEvent = TraitsSet[0].args.traits
-    for (let i = 0; i < traitsFromEvent.length; i++) {
-      for (let j = 0; j < traitsFromEvent[i].rarities.length; j++) {
-        assert.equal(traitsFromEvent[i].rarities[j].toString(), traits[i][0][j].toString(), "trait rarities event")
-      }
-    }
-
-    const traitsFromGet = await token.getPossibleTraits();
-    for (let i = 0; i < traitsFromGet.length; i++) {
-      for (let j = 0; j < traitsFromGet[i].rarities.length; j++) {
-        assert.equal(traitsFromGet[i].rarities[j].toString(), traits[i][0][j].toString(), "trait rarities get")
-      }
-    }
-    
     //check royalties
     const royalty = await token.getRaribleV2Royalties(0);
     assert.equal(royalty[0].account, collectionRoyalties[0][0], "get royalties account")
@@ -103,15 +80,12 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
   });
 
   it("should be able to mint many tokens", async () => {
-    const trait1 = [[1000, 2000, 7000]]
-    const trait2 = [[3333, 3333, 3334]]
-    const trait3 = [[1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]]
     const total = 30;
     const collectionRoyalties = [[accounts[5], 700]]
     const name = "Tc"
     const symbol = "T"
     const maxValue = 10;
-    const initData = [name, symbol, collectionRoyalties, [trait1, trait2, trait3], total, maxValue];
+    const initData = [name, symbol, collectionRoyalties, total, maxValue];
 
     const artist = accounts[2]
     const buyer = accounts[3];
@@ -125,10 +99,10 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
     const MysteryBoxesMint1 = await parseMysteryBoxesMint(token, mintTx1)
     assert.equal(MysteryBoxesMint1.length, 10, "length")
 
-    let traitsFirst = {};
-    for (const el of MysteryBoxesMint1) {
-      traitsFirst[el] = (await token.getTokenTraits(el)).map(x => x.toString())
-    }
+//    let traitsFirst = {};
+//    for (const el of MysteryBoxesMint1) {
+//      traitsFirst[el] = (await token.getTokenTraits(el)).map(x => x.toString())
+//    }
 
     await truffleAssert.fails(
       token.mint(artist, buyer, 11, { from: operatorProxy }),
@@ -148,13 +122,13 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
       "OperatorRole: caller is not the operator"
     )
 
-    await fakeBlock(accounts)
-    for (const el of MysteryBoxesMint1) {
-      const temp = (await token.getTokenTraits(el)).map(x => x.toString())
-      for (let i = 0; i < temp.length; i++) {
-        assert.equal(temp[i], traitsFirst[el][i], "getTraits returns same results")
-      }
-    }
+//    await fakeBlock(accounts)
+//    for (const el of MysteryBoxesMint1) {
+//      const temp = (await token.getTokenTraits(el)).map(x => x.toString())
+//      for (let i = 0; i < temp.length; i++) {
+//        assert.equal(temp[i], traitsFirst[el][i], "getTraits returns same results")
+//      }
+//    }
   });
 
   async function parseMysteryBoxesMint(contract, tx) {

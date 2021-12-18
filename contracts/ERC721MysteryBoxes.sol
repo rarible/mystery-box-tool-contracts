@@ -7,14 +7,14 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 
 import "./interfaces/IERC721GenMint.sol";
-import "./royalties/RoyaltiesV2GenImpl.sol";
+import "./royalties/RoyaltiesV2MysteryBoxesImpl.sol";
 import "./tokens/ERC721GenDefaultApproval.sol";
 import "./tokens/ERC721GenOperatorRole.sol";
 import "./tokens/HasContractURI.sol";
 
 //import "./traits/TraitsManager.sol";
 
-contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, HasContractURI, RoyaltiesV2GenImpl, ERC721GenOperatorRole {
+contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, HasContractURI, RoyaltiesV2MysteryBoxesImpl, ERC721GenOperatorRole {
     using SafeMathUpgradeable for uint;
     using StringsUpgradeable for uint;
 
@@ -45,7 +45,7 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, Has
     ) external initializer {
         __HasContractURI_init_unchained(_baseURI);
         __RoyaltiesV2Upgradeable_init_unchained();
-        __RoyaltiesV2GenImpl_init_unchained(_royalties);
+        __RoyaltiesV2MysteryBoxesImpl_init_unchained(_royalties);
         __Context_init_unchained();
         __ERC165_init_unchained();
         __Ownable_init_unchained();
