@@ -4,16 +4,16 @@ pragma solidity >=0.6.9 <0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-contract ERC721GenOperatorRole is OwnableUpgradeable {
+contract ERC721OperatorRole is OwnableUpgradeable {
     mapping (address => bool) operators;
 
-    function __ERC721GenOperatorRole_init(address operator) external initializer {
+    function __ERC721OperatorRole_init(address operator) external initializer {
         __Context_init_unchained();
         __Ownable_init_unchained();
-        __ERC721GenOperatorRole_init_unchained(operator);
+        __ERC721OperatorRole_init_unchained(operator);
     }
 
-    function __ERC721GenOperatorRole_init_unchained(address operator) internal initializer {
+    function __ERC721OperatorRole_init_unchained(address operator) internal initializer {
         operators[operator] = true;
     }
 

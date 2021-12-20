@@ -99,11 +99,6 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
     const MysteryBoxesMint1 = await parseMysteryBoxesMint(token, mintTx1)
     assert.equal(MysteryBoxesMint1.length, 10, "length")
 
-//    let traitsFirst = {};
-//    for (const el of MysteryBoxesMint1) {
-//      traitsFirst[el] = (await token.getTokenTraits(el)).map(x => x.toString())
-//    }
-
     await truffleAssert.fails(
       token.mint(artist, buyer, 11, { from: operatorProxy }),
       truffleAssert.ErrorType.REVERT,
@@ -121,14 +116,6 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
       truffleAssert.ErrorType.REVERT,
       "OperatorRole: caller is not the operator"
     )
-
-//    await fakeBlock(accounts)
-//    for (const el of MysteryBoxesMint1) {
-//      const temp = (await token.getTokenTraits(el)).map(x => x.toString())
-//      for (let i = 0; i < temp.length; i++) {
-//        assert.equal(temp[i], traitsFirst[el][i], "getTraits returns same results")
-//      }
-//    }
   });
 
   async function parseMysteryBoxesMint(contract, tx) {

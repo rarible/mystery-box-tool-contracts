@@ -6,15 +6,13 @@ pragma abicoder v2;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/math/SafeMathUpgradeable.sol";
 
-import "./interfaces/IERC721GenMint.sol";
+import "./interfaces/IERC721Mint.sol";
 import "./royalties/RoyaltiesV2MysteryBoxesImpl.sol";
-import "./tokens/ERC721GenDefaultApproval.sol";
-import "./tokens/ERC721GenOperatorRole.sol";
+import "./tokens/ERC721DefaultApproval.sol";
+import "./tokens/ERC721OperatorRole.sol";
 import "./tokens/HasContractURI.sol";
 
-//import "./traits/TraitsManager.sol";
-
-contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, HasContractURI, RoyaltiesV2MysteryBoxesImpl, ERC721GenOperatorRole {
+contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasContractURI, RoyaltiesV2MysteryBoxesImpl, ERC721OperatorRole {
     using SafeMathUpgradeable for uint;
     using StringsUpgradeable for uint;
 
@@ -50,8 +48,8 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, Has
         __ERC165_init_unchained();
         __Ownable_init_unchained();
         __ERC721_init_unchained(_name, _symbol);
-        __ERC721GenDefaultApproval_init_unchained(_transferProxy);
-        __ERC721GenOperatorRole_init_unchained(_operatorProxy);
+        __ERC721DefaultApproval_init_unchained(_transferProxy);
+        __ERC721OperatorRole_init_unchained(_operatorProxy);
         __ERC721MysteryBoxes_init_unchained(_total, _maxValue);
     }
 
@@ -62,7 +60,7 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, Has
     }
 
     //mint "value" amount of tokens and transfer them to "to" address
-    function mint(address artist, address to, uint value) onlyOperator() public {
+    function mint(address artist, address to, uint value) onlyOperator public {
         require(value > 0 && value <= maxValue, "incorrect value of tokens to mint");
         require(seed == 0, "can`t mint");
         require(artist == owner(), "artist is not an owner"); //TODO need this require?

@@ -82,7 +82,7 @@ contract("ERC721MysteryBoxes", accounts => {
       const tx = await testing.mint(accounts[0], accounts[1], 10);
       console.log("Used gas: ", tx.receipt.gasUsed)
     }
-
+    //10 times * 10 mints = 100, try to mint 101 - fail
     await truffleAssert.fails(
       testing.mint(accounts[0], accounts[1], 1),
       truffleAssert.ErrorType.REVERT,

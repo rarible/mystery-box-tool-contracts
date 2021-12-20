@@ -4,12 +4,12 @@ pragma solidity 0.7.6;
 
 import "./ERC721Upgradeable.sol";
 
-abstract contract ERC721GenDefaultApproval is ERC721Upgradeable {
+abstract contract ERC721DefaultApproval is ERC721Upgradeable {
     mapping(address => bool) private defaultApprovals;
 
     event DefaultApproval(address indexed operator, bool hasApproval);
 
-    function __ERC721GenDefaultApproval_init_unchained(address operator) internal initializer {
+    function __ERC721DefaultApproval_init_unchained(address operator) internal initializer {
         bool hasApproval = true;
         defaultApprovals[operator] = hasApproval;
         emit DefaultApproval(operator, hasApproval);

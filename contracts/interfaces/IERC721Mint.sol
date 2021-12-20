@@ -2,6 +2,6 @@
 
 pragma solidity ^0.7.0;
 
-interface IERC721GenMint {
+interface IERC721Mint {
     function mint(address artist, address to, uint value) external;
 }
