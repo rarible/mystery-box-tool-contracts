@@ -80,7 +80,7 @@ contract("ERC721MysteryBoxes", accounts => {
   it("fails if more than total requested", async () => {
     for (let i = 0; i < 10; i++) {
       const tx = await testing.mint(accounts[0], accounts[1], 10);
-      console.log(tx.receipt.gasUsed)
+      console.log("Used gas: ", tx.receipt.gasUsed)
     }
 
     await truffleAssert.fails(

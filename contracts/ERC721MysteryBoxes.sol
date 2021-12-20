@@ -50,7 +50,6 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, Has
         __ERC165_init_unchained();
         __Ownable_init_unchained();
         __ERC721_init_unchained(_name, _symbol);
-//        __TraitsManager_init_unchained(_traits);TODO delete later
         __ERC721GenDefaultApproval_init_unchained(_transferProxy);
         __ERC721GenOperatorRole_init_unchained(_operatorProxy);
         __ERC721MysteryBoxes_init_unchained(_total, _maxValue);
@@ -71,17 +70,18 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721GenDefaultApproval, Has
         uint totalSupply = minted;
         require(totalSupply.add(value) <= total, "all minted");
 
-        for (uint i = 1; i <= value; i ++) {
-            mintSingleToken(i, totalSupply + i, to);
+        for (uint i = 0; i < value; i ++) {
+            mintSingleToken(totalSupply + i, to);
         }
         minted = totalSupply.add(value);
     }
 
     //mint one token
-    function mintSingleToken(uint i, uint totalSupply, address to) internal {
-        uint tokenId = totalSupply + i;
-        _mint(to, tokenId);
-        emit MysteryBoxesMint(tokenId, tokenId);
+    function mintSingleToken(uint tokenId, address to) internal {
+        uint _tokenId = tokenId + 1;
+        _mint(to, _tokenId);
+
+        emit MysteryBoxesMint(_tokenId, _tokenId);
     }
 
     function _emitMintEvent(address to, uint tokenId) internal virtual override {
