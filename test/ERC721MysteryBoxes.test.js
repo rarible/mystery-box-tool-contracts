@@ -56,10 +56,8 @@ contract("ERC721MysteryBoxes", accounts => {
       toBlock: tx.receipt.blockNumber
     });
     const ev = MysteryBoxesMintEvent[0];
-    console.log("event is", ev);
     const tokenId = ev.args.tokenId;
     assert(tokenId, "tokenId");
-    assert.equal(ev.args.number, 1);
 
     const Transfer = await testing.getPastEvents("Transfer", {
       fromBlock: tx.receipt.blockNumber,
@@ -132,6 +130,40 @@ contract("ERC721MysteryBoxes", accounts => {
 
     await erc721test.mint(accounts[0], accounts[1], 7);
     assert.equal(await erc721test.getMinted(), 17, "minted")
+  })
+
+  it("check emit event MysteryBoxesReveal while run reveal()", async () => {
+    const tx = await testing.mint(accounts[0], accounts[1], 1);
+
+    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMint", {
+      fromBlock: tx.receipt.blockNumber,
+      toBlock: tx.receipt.blockNumber
+    });
+
+    const ev = MysteryBoxesMintEvent[0];
+    const tokenId = ev.args.tokenId;
+
+    const txReveal = await testing.reveal();
+//  emit  MysteryBoxesReveal(seed, minted, total)
+    const MysteryBoxesRevealEvent = await testing.getPastEvents("MysteryBoxesReveal", {
+      fromBlock: txReveal.receipt.blockNumber,
+      toBlock: txReveal.receipt.blockNumber
+    });
+
+    const evReveal = MysteryBoxesRevealEvent[0];
+    const seed = evReveal.args.seed;
+    const minted = evReveal.args.minted;
+    const total = evReveal.args.total;
+
+    console.log("seed: ", Number(seed));
+    assert.equal(minted, 1, "minted");
+    assert.equal(total, 100, "total");
+
+    await truffleAssert.fails(
+      testing.mint(accounts[0], accounts[1], 1),
+      truffleAssert.ErrorType.REVERT,
+      "already reveal can`t mint"
+    )
   })
 
 })

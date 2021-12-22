@@ -94,19 +94,19 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
     const [CollectionCreatedEvent] = events(tx, "CollectionCreated");
     const token = await ERC721MysteryBoxes.at(CollectionCreatedEvent.args.collection)
 
-    const mintTx1 = await token.mint(artist, buyer, 10, { from: operatorProxy })
+    const mintTx1 = await token.mint(artist, buyer, 10, { from: artist })
     console.log(mintTx1.receipt.gasUsed)
     const MysteryBoxesMint1 = await parseMysteryBoxesMint(token, mintTx1)
     assert.equal(MysteryBoxesMint1.length, 10, "length")
 
     await truffleAssert.fails(
-      token.mint(artist, buyer, 11, { from: operatorProxy }),
+      token.mint(artist, buyer, 11, { from: artist }),
       truffleAssert.ErrorType.REVERT,
       "incorrect value of tokens to mint"
     )
 
     await truffleAssert.fails(
-      token.mint(artist, buyer, 0, { from: operatorProxy }),
+      token.mint(artist, buyer, 0, { from: artist }),
       truffleAssert.ErrorType.REVERT,
       "incorrect value of tokens to mint"
     )
@@ -114,7 +114,7 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
     await truffleAssert.fails(
       token.mint(artist, buyer, 1, { from: transferProxy }),
       truffleAssert.ErrorType.REVERT,
-      "OperatorRole: caller is not the operator"
+      "Ownable: caller is not the owner"
     )
   });
 

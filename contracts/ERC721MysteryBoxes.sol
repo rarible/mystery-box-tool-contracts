@@ -17,7 +17,8 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
     using StringsUpgradeable for uint;
 
     event MysteryBoxesTotal(uint total);
-    event MysteryBoxesMint(uint indexed tokenId, uint number);
+    event MysteryBoxesMint(uint indexed tokenId);
+    event MysteryBoxesReveal(uint seed, uint minted, uint total);
 
     //max amount of tokens in existance
     uint public total;
@@ -60,10 +61,10 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
     }
 
     //mint "value" amount of tokens and transfer them to "to" address
-    function mint(address artist, address to, uint value) onlyOperator public {
+    function mint(address artist, address to, uint value) public onlyOwner {
         require(value > 0 && value <= maxValue, "incorrect value of tokens to mint");
-        require(seed == 0, "can`t mint");
-        require(artist == owner(), "artist is not an owner"); //TODO need this require?
+        require(seed == 0, "already reveal can`t mint");
+        require(artist == owner(), "artist is not an owner");
 
         uint totalSupply = minted;
         require(totalSupply.add(value) <= total, "all minted");
@@ -79,7 +80,7 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
         uint _tokenId = tokenId + 1;
         _mint(to, _tokenId);
 
-        emit MysteryBoxesMint(_tokenId, _tokenId);
+        emit MysteryBoxesMint(_tokenId);
     }
 
     function _emitMintEvent(address to, uint tokenId) internal virtual override {
@@ -93,7 +94,9 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
     }
 
     function reveal() public onlyOwner {
-        seed = uint(keccak256(abi.encodePacked(block.timestamp, block.number, block.difficulty, maxValue, minted)));
+        seed = uint(keccak256(abi.encodePacked(block.timestamp, block.number, block.difficulty, maxValue, minted, total)));
+
+        emit MysteryBoxesReveal(seed, minted, total);
     }
 
     uint256[50] private __gap;
