@@ -61,7 +61,7 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
     }
 
     //mint "value" amount of tokens and transfer them to "to" address
-    function mint(address artist, address to, uint value) public onlyOwner {
+    function mint(address artist, address to, uint value) public onlyOperator {
         require(value > 0 && value <= maxValue, "incorrect value of tokens to mint");
         require(seed == 0, "already reveal can`t mint");
         require(artist == owner(), "artist is not an owner");
