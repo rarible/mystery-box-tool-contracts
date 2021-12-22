@@ -652,6 +652,13 @@
   resolved "https://registry.yarnpkg.com/@rarible/royalties/-/royalties-0.7.2.tgz#690af58c5266c42ccfd122415636840e748bf017"
   integrity sha512-0SeG2Rq8x6q/NTkBnxFSvKKpF/iNGuc8UbIYgFyFPq9ve7NJjP4gK8OeijxOonk8gABT/vJPw9KH6Qs9pl/vuw==
 
+"@rarible/tokens-minimal@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@rarible/tokens-minimal/-/tokens-minimal-0.0.4.tgz#4786aa9d605662fb4f8ff130002c8b3eafa6b07a"
+  integrity sha512-MfFJv0c1rtnGrAz3N7YfymphRFK84ObZpa6BZ8x/xc7dXixDNll9q0qSH9fe38aNCJHoXNuuEOhK5/Pu5Yt9Ig==
+  dependencies:
+    "@openzeppelin/contracts-upgradeable" "3.4.0"
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
