@@ -12,6 +12,6 @@ function enc(token, tokenId) {
 	}
 }
 
-const GEN_ART = id("MYSTERY_BOXES");
+const MYSTERY_BOXES = id("MYSTERY_BOXES");
 
 module.exports = { id, MYSTERY_BOXES, enc }
