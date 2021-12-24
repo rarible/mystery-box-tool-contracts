@@ -115,19 +115,4 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
       "OperatorRole: caller is not the operator"
     )
   });
-
-//  async function parseMysteryBoxesMint(contract, tx) {
-//    const events = await contract.getPastEvents("MysteryBoxesMinted", {
-//      fromBlock: tx.receipt.blockNumber,
-//      toBlock: tx.receipt.blockNumber
-//    });
-//
-//    let result = []
-//
-//    for (const ev of events) {
-//      result.push(ev.args.minted.toString())
-//    }
-//    return result;
-//  }
-
 });
