@@ -96,8 +96,6 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
 
     const mintTx1 = await token.mint(artist, buyer, 10, { from: operatorProxy })
     console.log(mintTx1.receipt.gasUsed)
-    const MysteryBoxesMint1 = await parseMysteryBoxesMint(token, mintTx1)
-    assert.equal(MysteryBoxesMint1.length, 10, "length")
 
     await truffleAssert.fails(
       token.mint(artist, buyer, 11, { from: operatorProxy }),
@@ -118,18 +116,18 @@ contract("ERC721MysteryBoxesFactoryTest", accounts => {
     )
   });
 
-  async function parseMysteryBoxesMint(contract, tx) {
-    const events = await contract.getPastEvents("MysteryBoxesMint", {
-      fromBlock: tx.receipt.blockNumber,
-      toBlock: tx.receipt.blockNumber
-    });
-
-    let result = []
-
-    for (const ev of events) {
-      result.push(ev.args.tokenId.toString())
-    }
-    return result;
-  }
+//  async function parseMysteryBoxesMint(contract, tx) {
+//    const events = await contract.getPastEvents("MysteryBoxesMinted", {
+//      fromBlock: tx.receipt.blockNumber,
+//      toBlock: tx.receipt.blockNumber
+//    });
+//
+//    let result = []
+//
+//    for (const ev of events) {
+//      result.push(ev.args.minted.toString())
+//    }
+//    return result;
+//  }
 
 });

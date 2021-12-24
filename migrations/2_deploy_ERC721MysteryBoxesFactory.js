@@ -1,5 +1,5 @@
 const contract = require("@truffle/contract");
-const { id, MYSTERY_BOXES, enc } = require('../library/assets.js')
+const { id, GEN_ART, enc } = require('../library/assets.js')
 
 const adminJson = require("@openzeppelin/upgrades-core/artifacts/ProxyAdmin.json")
 const ProxyAdmin = contract(adminJson)
@@ -11,7 +11,6 @@ UpgradeableBeacon.setProvider(web3.currentProvider)
 
 const ERC721MysteryBoxes = artifacts.require('ERC721MysteryBoxes');
 const ERC721MysteryBoxesFactory = artifacts.require('ERC721MysteryBoxesFactory');
-const ExchangeSetTransferProxy = artifacts.require('ExchangeSetTransferProxy');
 
 const zero = "0x0000000000000000000000000000000000000000"
 
@@ -84,10 +83,6 @@ module.exports = async function (deployer, network, accounts) {
 	) {
 		throw new Error(`need to set settings for network ${network}`);
 	}
-
-	//setting address of operatorProxy in exchangeV2 for new type - MYSTERY_BOXES
-	const exchangeSetTransferProxy = await ExchangeSetTransferProxy.at(settings.exchangeV2)
-	await exchangeSetTransferProxy.setTransferProxy(MYSTERY_BOXES, settings.operatorProxy, { gas: 100000 })
 
 	//deploying ERC721MysteryBoxes implementation
 	await deployer.deploy(ERC721MysteryBoxes, { gas: 5500000 });

@@ -34,10 +34,11 @@ contract("ERC721MysteryBoxes", accounts => {
     const shouldBeContractURI = baseURI + testing.address.toLowerCase();
     assert.equal(contractURI, shouldBeContractURI, "contractURI")
 
-    const shouldBeURI = contractURI + "/"
+    const shouldBeURI = contractURI + "/" + "0" + "/";
 
     assert.equal(tokenURI0, shouldBeURI + "0", "token URI")
     assert.equal(tokenURI1, shouldBeURI + "1", "token URI")
+    console.log("tokenURI0:", tokenURI0);
   })
 
   it("fails if artist is incorrect", async () => {
@@ -51,12 +52,12 @@ contract("ERC721MysteryBoxes", accounts => {
   it("mints a token if everything's correct", async () => {
     const tx = await testing.mint(accounts[0], accounts[1], 1);
     console.log(tx.receipt.gasUsed)
-    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMint", {
+    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMinted", {
       fromBlock: tx.receipt.blockNumber,
       toBlock: tx.receipt.blockNumber
     });
     const ev = MysteryBoxesMintEvent[0];
-    const tokenId = ev.args.tokenId;
+    const tokenId = ev.args.minted;
     assert(tokenId, "tokenId");
 
     const Transfer = await testing.getPastEvents("Transfer", {
@@ -91,13 +92,13 @@ contract("ERC721MysteryBoxes", accounts => {
   it("default approver should work", async () => {
     const tx = await testing.mint(accounts[0], accounts[1], 1);
 
-    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMint", {
+    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMinted", {
       fromBlock: tx.receipt.blockNumber,
       toBlock: tx.receipt.blockNumber
     });
 
     const ev = MysteryBoxesMintEvent[0];
-    const tokenId = ev.args.tokenId;
+    const tokenId = ev.args.minted;
 
     assert.equal(await testing.ownerOf(tokenId), accounts[1], "owner of")
 
@@ -135,13 +136,13 @@ contract("ERC721MysteryBoxes", accounts => {
   it("check emit event MysteryBoxesReveal while run reveal()", async () => {
     const tx = await testing.mint(accounts[0], accounts[1], 1);
 
-    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMint", {
+    const MysteryBoxesMintEvent = await testing.getPastEvents("MysteryBoxesMinted", {
       fromBlock: tx.receipt.blockNumber,
       toBlock: tx.receipt.blockNumber
     });
 
     const ev = MysteryBoxesMintEvent[0];
-    const tokenId = ev.args.tokenId;
+    const tokenId = ev.args.minted;
 
     const txReveal = await testing.reveal();
 //  emit  MysteryBoxesReveal(seed, minted, total)

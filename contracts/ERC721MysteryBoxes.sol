@@ -17,7 +17,7 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
     using StringsUpgradeable for uint;
 
     event MysteryBoxesTotal(uint total);
-    event MysteryBoxesMint(uint indexed tokenId);
+    event MysteryBoxesMinted(address artist, address to, uint value, uint minted);
     event MysteryBoxesReveal(uint seed, uint minted, uint total);
 
     //max amount of tokens in existance
@@ -73,14 +73,14 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
             mintSingleToken(totalSupply + i, to);
         }
         minted = totalSupply.add(value);
+
+        emit MysteryBoxesMinted(artist, to, value, minted);
     }
 
     //mint one token
     function mintSingleToken(uint tokenId, address to) internal {
         uint _tokenId = tokenId + 1;
         _mint(to, _tokenId);
-
-        emit MysteryBoxesMint(_tokenId);
     }
 
     function _emitMintEvent(address to, uint tokenId) internal virtual override {
@@ -90,7 +90,7 @@ contract ERC721MysteryBoxes is OwnableUpgradeable, ERC721DefaultApproval, HasCon
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
-        return string(abi.encodePacked(contractURI, "/", tokenId.toString()));
+        return string(abi.encodePacked(contractURI, "/", seed.toString() ,"/",  tokenId.toString()));
     }
 
     function reveal() public onlyOwner {
